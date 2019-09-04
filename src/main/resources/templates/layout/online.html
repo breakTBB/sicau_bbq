@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Programming forum about Java powered by Spring Framework"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>表白墙-SICAU</title>
+    <link href="http://localhost:8080/css/icon.css" rel="stylesheet"/>
+    <link href="http://localhost:8080/css/materialize.css" rel="stylesheet"/>
+    <script src="http://localhost:8080/js/check.js"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <div class="container">
+                <ul id="nav-left" class="left hide-on-med-and-down">
+                    <li><a th:href="@{'/topics/all/1'}">所有</a></li>
+                    <li><a th:href="@{'/topics/bb/1'}">表白信息</a></li>
+                    <li><a th:href="@{'/topics/dt/1'}">个人动态</a></li>
+                    <li><a th:href="@{'/topics/xr/1'}">寻人启事</a></li>
+                    <li><a th:href="@{'/topics/mostup/1'}">点赞最多</a></li>
+                    <li><a th:href="@{'/topics/recommend/1'}">今日推荐</a></li>
+                </ul>
+                <ul id="nav-right" class="right hide-on-med-and-down">
+                    <li><a th:href="@{'/profile/'+${user.getId()}}" th:text="${user.getUsername()}">简介</a></li>
+                    <li><a th:href="@{'/addTopic'}">上墙</a></li>
+                    <li><a th:href="@{'/message'}">消息<span class="new badge" th:text="${newMessage}">2</span></a></li>
+                    <li><a th:href="@{'/logout'}">登出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main layout:fragment="content">
+        <p>Default content</p>
+    </main>
+    <script type="text/javascript"  src="http://localhost:8080/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"  src="http://localhost:8080/js/materialize.js"></script>
+    <script src="http://localhost:8080/js/check.js"></script>
+</body>
+</html>

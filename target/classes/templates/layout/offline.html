@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>欢迎来到川农表白墙！</title>
+    <link href="http://localhost:8080/css/icon.css" rel="stylesheet"/>
+    <link href="http://localhost:8080/css/materialize.css" rel="stylesheet"/>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <div class="container">
+				<ul id="nav-left" class="left hide-on-med-and-down">
+                    <li><a th:href="@{'/'}" style="font-size:25px;color:white">川农表白墙</a></li>
+                </ul>
+                            
+                <ul id="nav-left" class="right hide-on-med-and-down">
+                    <li><a th:href="@{'/'}">主页</a></li>
+                    <li><a th:href="@{'/login'}">登录</a></li>
+                    <li><a th:href="@{'/register'}">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main layout:fragment="content">
+        <p>川农表白墙</p>
+    </main>
+
+    <script type="text/javascript"  src="http://localhost:8080/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"  src="http://localhost:8080/js/materialize.js"></script>
+
+</body>
+</html>

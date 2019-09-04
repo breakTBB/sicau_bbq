@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/online">
+<head>
+    <title>上墙</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <article class="container" style="padding: 3% 0 2%;">
+            <header class="row">
+                <div class="col s12">
+                    <blockquote class="flow-text left" th:text="|选择类别： |">Add topic</blockquote>
+                </div>
+            </header>
+            <section>
+                <form th:action="@{/addTopic}" method="post">
+                    <div class="row">
+                        <div class="col s12">
+                            <p>
+                                <label>
+                                    <input value="bb" name="category" class="with-gap" type="radio" id="bb" required="required"/>
+                                    <span>表白信息</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input value="dt" name="category" class="with-gap" type="radio" id="dt" required="required"/>
+                                    <span>个人动态</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input value="xr" name="category" class="with-gap" type="radio" id="xr" required="required"/>
+                                    <span>寻人启事</span>
+                                </label>
+                            </p>
+                            <p>
+
+                                <label>
+                                    <input value="other" name="category" class="with-gap" type="radio" id="other" required="required"/>
+                                    <span>其他</span>
+                                </label>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <label>标题:
+                                <input type="text" name="title" maxlength="32" data-length="32" required="required"/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <label>内容:
+                            		<textarea name="content" class="materialize-textarea" maxlength="1024" data-length="1024" required="required"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id_user" th:value="${user.getId()}"/>
+                    <div class="row">
+                        <div class="col s12 center">
+                            <button class="btn waves-effect waves-light btn-large" type="submit" name="add">上墙</button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </article>
+    </main>
+</body>
+</html>

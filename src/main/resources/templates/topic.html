@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorator="layout/online">
+<head>
+	<title th:text="${topic.getTitle()}">title</title>
+</head>
+<body>
+<main layout:fragment="content">
+	<article class="container" style="padding: 3% 0 2%;">
+		<header class="row">
+			<div class="col s12">
+				<blockquote class="flow-text left" th:text="${topic.getTitle()}">Topic's
+					title</blockquote>
+			</div>
+		</header>
+		<section class="row">
+			<div class="col s12">
+				<a th:href="@{'/profile/' + ${topic.getIdUser()}}">
+					<span class="chip left" th:text="${userDao.getUsernameById(topic.getIdUser())}">Topic's author</span>
+				</a>
+				<input id="tid" type="hidden" name="id_topic" th:value="${topic.getId()}"/>
+				<a href="#">
+					<span class="chip left" style="background-color: #ee6e73;" onclick="up()">点赞</span>
+				</a>
+				 <span th:if="${topic.getIdUser() == idUser || user.isAdmin()}">
+					<form th:action="@{/topic/del/{topic.getId()}}" method="post">
+						<input type="hidden" name="action" th:value="delete"/>
+						<input type="hidden" name="id_topic" th:value="${topic.getId()}"/>
+						<button class="chip left" style="background-color: #37b7ab;">删除</button>
+					</form>
+				</span>
+				<span class="right" th:text="${topic.displayParsedCreatedDate()}"></span>
+			</div>
+		</section>
+		<section class="row">
+			<p class="col s12"
+			   style="text-align: justify; display: block; white-space: pre-wrap"
+			   th:text="${topic.getContent()}">Topic's content</p>
+		</section>
+
+		<header class="row">
+			<div class="col s12">
+				<blockquote class="flow-text left" th:text="|评论数: | + ${answers.size()}">Number of answers</blockquote>
+			</div>
+		</header>
+
+		<section class="row">
+			<div class="col s12" th:each="answer : ${answers}" style="margin: 3% 0 3%; padding: 2%; border-top-right-radius: 10px; border-bottom-right-radius: 10px; background: linear-gradient(to right, #e7e4e4, #f3f2f2); background: -webkit-linear-gradient(left, #e7e4e4, #f3f2f2); background: -o-linear-gradient(right, #e7e4e4, #f3f2f2); background: -moz-linear-gradient(right, #e7e4e4, #f3f2f2);" th:if="${answer.pid == null}">
+				<a th:href="@{'/profile/' + ${answer.getIdUser()}}">
+					<span class="chip left" style="background-color: #f3f2f2;" th:text="${userDao.getUsernameById(answer.getIdUser())}">Answer's author</span>
+				</a>
+				<span class="right" th:text="${answer.displayParsedCreatedDate()}"> </span>
+				<span th:if="${answer.getIdUser() == idUser || user.isAdmin()}">
+					<form th:action="@{/topic/{topic.getId()}}" method="post">
+						<input type="hidden" name="id_answer" th:value="${answer.getId()}" />
+						<input type="hidden" name="action" th:value="delete" />
+						<input type="hidden" name="id_topic" th:value="${topic.getId()}" />
+						<button class="chip left" style="background-color: #37b7ab;">删除</button>
+					</form>
+				</span>
+				<div class="row">
+					<p class="col s12" style="text-align: justify; display: block; white-space: pre-wrap" th:text="${answer.getContent()}">Answer's content</p>
+				</div>
+
+				<!--二级评论-->
+				<div th:each="reply: ${answers}" th:if="${reply.pid == answer.id}">
+					<a th:href="@{'/profile/' + ${reply.getIdUser()}}">
+						<span class="chip left" style="background-color: #f3f2f2;" th:text="${userDao.getUsernameById(reply.getIdUser())}">Answer's author</span>
+					</a>
+					<span class="right" th:text="${reply.displayParsedCreatedDate()}"> </span>
+
+					<span th:if="${reply.getIdUser() == idUser || user.isAdmin()}">
+					<form th:action="@{/topic/{topic.getId()}}" method="post">
+						<input type="hidden" name="id_answer" th:value="${reply.getId()}" />
+						<input type="hidden" name="action" th:value="delete" />
+						<input type="hidden" name="id_topic" th:value="${topic.getId()}" />
+						<button class="chip left" style="background-color: #37b7ab;">删除</button>
+					</form>
+				</span>
+					<div class="row">
+						<p class="col s12" style="background-color: #9e9e9e; text-align: justify; display: block; white-space: pre-wrap" th:text="${reply.getContent()}">Answer's content</p>
+					</div>
+				</div>
+<!--				每一条评论下面的回复框-->
+				<section>
+					<form method="post" action="/reply">
+						<input type="hidden" name="id_answer" th:value="${answer.getId()}" />
+						<input type="hidden" name="id_topic" th:value="${topic.getId()}" />
+						<input type="hidden" name="id_user" th:value="${idUser}" />
+						<div class="row">
+							<div class="col s10">
+								<label>回复这个评论<textarea name="content" class="materialize-textarea" maxlength="1024" data-length="1024" required="required"></textarea>
+									<span class="character-counter" style="float: right; font-size: 12px; height: 1px;"></span></label>
+							</div>
+							<button class="btn waves-effect waves-light btn-small" type="submit" name="answer">回复</button>
+
+						</div>
+					</form>
+				</section>
+
+			</div>
+		</section>
+
+		<header class="row">
+			<div class="col s12">
+				<blockquote class="flow-text left" th:text="|写评论: |">Add answer</blockquote>
+			</div>
+		</header>
+		<section>
+			<form th:action="@{/topic}" method="post">
+				<div class="row">
+					<div class="col s12">
+						<label>Content: <textarea name="content"
+												  class="materialize-textarea" maxlength="1024" data-length="1024"
+												  required="required"></textarea>
+						</label>
+					</div>
+				</div>
+
+				<input type="hidden" name="id_topic" th:value="${topic.getId()}" />
+				<input type="hidden" name="id_user" th:value="${idUser}" />
+				<div class="row">
+					<div class="col s12 center">
+						<button class="btn waves-effect waves-light btn-large"
+								type="submit" name="answer">评论</button>
+					</div>
+				</div>
+			</form>
+		</section>
+	</article>
+</main>
+</body>
+</html>

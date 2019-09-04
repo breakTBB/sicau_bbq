@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/offline">
+<head>
+    <title>登录</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <article class="container" style="padding-top: 3%;">
+            <header class="row">
+                <div class="col s12">
+                    <h2 class="center" style="margin-bottom: 10%;">欢迎来到川农大表白墙~~~</h2>
+                    <p class="center flow-text" th:if="${param.error}">请输入正确的用户名或密码!</p>
+                </div>
+            </header>
+            <section>
+                <form th:action="@{/login}" method="post">
+                    <div class="row">
+                        <div class="col s12">
+                            <label> <h4>用户名:</h4>
+                                <input type="text" name="username" maxlength="10" data-length="10" required="required"/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <label> <h4>密码:</h4>
+                                <input type="password" name="password" maxlength="10" data-length="10" required="required"/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 center">
+                            <button class="btn waves-effect waves-light btn-large" type="submit" name="login">确定</button>
+                        </div>
+                    </div>
+                    <!-- 这一句主要防止CSRF攻击 -->
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                </form>
+            </section>
+        </article>
+    </main>
+    <script type="text/javascript"  src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+</body>
+</html>

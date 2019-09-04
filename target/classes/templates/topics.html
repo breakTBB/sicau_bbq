@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html" layout:decorator="layout/online">
+<head>
+    <title>话题</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <article class="container" style="padding: 3% 0 2%;">
+            <header class="row">
+                <blockquote class="flow-text left" th:text="${header}">Header</blockquote>
+                <blockquote class="flow-text right" th:text="|话题数量： | + ${topicsTotalNum}">Number of topics</blockquote>
+            </header>
+            <section class="row">
+                <div class="col s12">
+                    <th:block th:each="topic : ${topics}" class="row" th:if="${topic.getChecked() || user.isAdmin() || topic.getIdUser() == idUser}">
+                        <div class="col s12 m6">
+                            <div class="card blue-grey darken-1">
+                                <div class="card-content white-text">
+                                    <a th:href="@{'/topic/' + ${topic.getId()}}"><span class="card-title" th:text="${topic.getTitle()}">卡片标题</span></a>
+                                    <p th:text="${topic.getContent()}">内容</p>
+                                </div>
+                                <div class="card-action">
+                                    <span href="#" th:text="|浏览量(| + ${topic.visit} + |)|">visit</span>
+                                    <span href="#" th:text="|点赞量(| + ${topic.upthumb} + |)|">upthumb</span>
+                                    <form action="http://localhost:8080/topic/check" method="post" th:if="${!topic.getChecked()}" class="right">
+                                        <input type="hidden" name="id_topic" th:value="${topic.getId()}" />
+                                        <span th:if="${ !user.isAdmin() }">未审核</span>
+                                        <button th:if="${ user.isAdmin() }" type="submit" id="check" style="margin-top: -15px;top: 10px;margin-left: 15px;" class="waves-effect waves-light btn small" onclick="chk()">允许显示</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+			</div>
+            </section>
+        </article>
+    </main>
+</body>
+</html>

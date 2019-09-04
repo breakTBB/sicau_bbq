@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/online">
+<head>
+    <title th:text="${otherUser.getUsername()}">Title of profile view</title>
+</head>
+<body>
+    <main layout:fragment="content">
+        <article class="container" style="padding: 3% 0 2%;">
+            <header class="row">
+                <div class="col s12">
+                    <blockquote class="flow-text left" th:text="${otherUser.getUsername()} + |的信息和足迹|">Profile</blockquote>
+                </div>
+            </header>
+            <section class="row">
+            		<div class="col s12">
+            			<span class="col s6">
+                           &nbsp;&nbsp;&nbsp;&nbsp;<span th:text="${otherUser.displayContentOfOptional()}">Introduction</span>
+                    </span>
+	                	<span th:if="${user.getId() != otherUser.getId() and !isFollowed}" class="chip right">
+						<form th:action="@{'/follow/'+${user.getId()}+'_'+${otherUser.getId()}}" method="post">
+							<input type="hidden" name="action" th:value="useful" /> 
+								<button class="chip left" style="background-color: #37b7ab;">关注</button>
+						</form>
+					</span>
+						<span th:if="${user.getId() != otherUser.getId() and isFollowed}" class="chip right">
+						<form>
+							<input type="hidden" name="action" th:value="useful" /> 
+								<button class="chip left" style="background-color: #37b7ab;">已关注</button>
+						</form>
+					</span> 
+                	</div>
+            </section>
+            <section class="row">
+                <div class="col s12 m6">
+                    <ul class="collection">
+                        <li class="collection-item center">基本信息</li>
+                        <li class="collection-item">
+                            <span class="badge">
+                                <span th:text="${otherUser.displayParsedDate()}">Created date</span>
+                            </span>注册时间:
+                        </li>
+                        <li class="collection-item">
+                        		<a th:href="@{'/fans/' + ${otherUser.getId()}}" style="display: block; color: black">
+                        			<span class="badge">
+                                		<span th:text="${followNums}">Created date</span>
+                            		</span>粉丝:
+                        		</a>
+                        		<a th:if="${user.getId() != otherUser.getId()}" th:href="@{'/commonfans/' + ${otherUser.getId()} + '_' + ${user.getId()}}" style="display: block; color: #26a69a">
+                        			<span class="left">
+                                		<span th:text="${user.getUsername()} + 与 + ${otherUser.getUsername()} + 有 + ${followNums} + 个共同粉丝" class="left">Created date</span>
+                            		</span>
+                        		</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col s12 m6">
+                    <ul class="collection">
+                        <li class="collection-item center strong">足迹</li>
+                        <li class="collection-item">
+                            <a th:href="@{'/topics/user/' + ${otherUser.getId()}+'_'+'1'}" style="display: block; color: #26a69a">
+                                <span class="badge">
+                                    <span th:text="${numberOfTopics}"></span>
+                                </span>话题:
+                            </a>
+                        </li>
+                        <li class="collection-item">
+                            <a th:href="@{'/answers/' + ${otherUser.getId()}}" style="display: block; color: #26a69a">
+                                <span class="badge">
+                                    <span th:text="${numberOfAnswers}"></span>
+                                </span>评论:
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+			</section>
+	</article>
+    </main>
+</body>
+</html>
